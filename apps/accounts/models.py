@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from apps.accounts.managers import CustomUserManager
 from apps.common.models import IsDeletedModel
 
@@ -9,7 +9,7 @@ ACCOUNT_TYPE_CHOICES = (
 )
 
 
-class User(IsDeletedModel, AbstractBaseUser):
+class User(IsDeletedModel, AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(
         max_length=25,
         null=True,
@@ -69,13 +69,3 @@ class User(IsDeletedModel, AbstractBaseUser):
 
     def __str__(self):
         return self.full_name
-
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
-
-    @property
-    def is_superuser(self):
-        return self.is_staff
