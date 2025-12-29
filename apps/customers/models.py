@@ -22,7 +22,8 @@ class Customer(IsDeletedModel):
     phone = models.CharField(
         max_length=25,
         verbose_name="Телефон",
-        help_text="Контактный номер телефона"
+        help_text="Контактный номер телефона",
+        unique=True
     )
     email = models.EmailField(
         blank=True,
