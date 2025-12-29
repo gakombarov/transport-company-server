@@ -47,3 +47,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             token['role'] = user.account_type
         
         return token
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['user'] = UserShortSerializer(self.user).data
+        
+        return data
