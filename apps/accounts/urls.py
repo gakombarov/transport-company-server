@@ -1,11 +1,13 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
-
-from apps.accounts.views import RegisterAPIView, MyTokenObtainPairView
+from apps.accounts.views import CreateDriverView, MyTokenObtainPairView, CurrentUserView
 
 urlpatterns = [
-  path('', RegisterAPIView.as_view(), name='registration'),
-  path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-  path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
-  path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('login/', MyTokenObtainPairView.as_view(), name='login'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
+    path('me/', CurrentUserView.as_view(), name='current_user'),
+
+    path('drivers/create/', CreateDriverView.as_view(), name='create_driver'),
 ]

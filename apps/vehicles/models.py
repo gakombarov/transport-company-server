@@ -7,7 +7,7 @@ VEHICLE_CATEGORY_CHOICES = (
     ('BUS', 'Автобус'),
 )
 
-
+    
 class Vehicle(IsDeletedModel):
     brand = models.CharField(
         max_length=50,
