@@ -1,10 +1,7 @@
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 
-
 from apps.drivers.models import DriverProfile
-
-
 from .serializer import (
     DriverProfileSerializer,
     DriverProfileCreateSerializer,
