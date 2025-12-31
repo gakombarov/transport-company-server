@@ -35,7 +35,9 @@ class Expense(IsDeletedModel):
     )
     description = models.TextField(
         verbose_name="Описание",
-        help_text="Подробное описание расхода"
+        help_text="Подробное описание расхода",
+        blank=True,
+        null=True
     )
 
     class Meta:

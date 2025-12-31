@@ -1,0 +1,2348 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Transport Company API",
+        "version": "1.0.0",
+        "description": "API для управления транспортной компанией"
+    },
+    "paths": {
+        "/api/auth/drivers/create/": {
+            "post": {
+                "operationId": "auth_drivers_create_create",
+                "description": "Создание водителя - ТОЛЬКО для админов",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUser"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUser"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateUser"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateUser"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/login/": {
+            "post": {
+                "operationId": "auth_login_create",
+                "description": "Вход для админов и водителей",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyTokenObtainPair"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyTokenObtainPair"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MyTokenObtainPair"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {}
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MyTokenObtainPair"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/me/": {
+            "get": {
+                "operationId": "auth_me_retrieve",
+                "description": "Получить данные текущего пользователя",
+                "tags": [
+                    "auth"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserShort"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/token/refresh/": {
+            "post": {
+                "operationId": "auth_token_refresh_create",
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenRefresh"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/token/verify/": {
+            "post": {
+                "operationId": "auth_token_verify_create",
+                "description": "Takes a token and indicates if it is valid.  This view provides no\ninformation about a token's fitness for a particular use.",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenVerify"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenVerify"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenVerify"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenVerify"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/bookings/": {
+            "get": {
+                "operationId": "bookings_list",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "tags": [
+                    "bookings"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Booking"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "bookings_create",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "tags": [
+                    "bookings"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/bookings/{id}/": {
+            "get": {
+                "operationId": "bookings_retrieve",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "bookings_update",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "bookings_partial_update",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedBooking"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedBooking"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedBooking"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "bookings_destroy",
+                "description": "ViewSet для работы с бронированиями - только для администраторов",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "bookings"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/customers/customers/": {
+            "get": {
+                "operationId": "customers_customers_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Customer"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "customers_customers_create",
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/customers/{id}/": {
+            "get": {
+                "operationId": "customers_customers_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "customers_customers_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "customers_customers_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "customers_customers_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/customers/customers/organizations/": {
+            "get": {
+                "operationId": "customers_customers_organizations_retrieve",
+                "description": "Путь для получения только организаций",
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/drivers/driver-profiles/": {
+            "get": {
+                "operationId": "drivers_driver_profiles_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "drivers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DriverProfile"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "drivers_driver_profiles_create",
+                "tags": [
+                    "drivers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DriverProfileCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/drivers/driver-profiles/{id}/": {
+            "get": {
+                "operationId": "drivers_driver_profiles_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "drivers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DriverProfile"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "drivers_driver_profiles_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "drivers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/DriverProfileCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DriverProfileCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "drivers_driver_profiles_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "drivers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedDriverProfileCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedDriverProfileCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedDriverProfileCreate"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DriverProfileCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "drivers_driver_profiles_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "drivers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/public/booking/": {
+            "post": {
+                "operationId": "public_booking_create",
+                "description": "Публичный эндпоинт для формы заявки на сайте (без авторизации)",
+                "tags": [
+                    "public"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookingPublic"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookingPublic"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookingPublic"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    },
+                    {}
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BookingPublic"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/vehicles/vehicles/": {
+            "get": {
+                "operationId": "vehicles_vehicles_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "vehicles"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Vehicle"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "vehicles_vehicles_create",
+                "tags": [
+                    "vehicles"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VihicleCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/vehicles/vehicles/{id}/": {
+            "get": {
+                "operationId": "vehicles_vehicles_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "vehicles"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Vehicle"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "vehicles_vehicles_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "vehicles"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VihicleCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VihicleCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "vehicles_vehicles_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "vehicles"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedVihicleCreate"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedVihicleCreate"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedVihicleCreate"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VihicleCreate"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "vehicles_vehicles_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Уникальный идентификатор"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "vehicles"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AccountTypeEnum": {
+                "enum": [
+                    "ADMIN",
+                    "DRIVER"
+                ],
+                "type": "string",
+                "description": "* `ADMIN` - Администратор\n* `DRIVER` - Водитель"
+            },
+            "Booking": {
+                "type": "object",
+                "description": "Для администраторов через API - полная информация",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "customer": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "source": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SourceEnum"
+                            }
+                        ],
+                        "title": "Источник заявки",
+                        "description": "Откуда поступила заявка\n\n* `PHONE` - Телефон\n* `EMAIL` - Email\n* `WEBSITE` - Сайт\n* `MESSENGER` - Мессенджер"
+                    },
+                    "desired_trip_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Желаемая дата поездки",
+                        "description": "Дата когда клиент хочет совершить поездку"
+                    },
+                    "desired_departure_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Желаемое время отправления",
+                        "description": "Время отправления по желанию клиента"
+                    },
+                    "arrival_location": {
+                        "type": "string",
+                        "title": "Место прибытия",
+                        "description": "Адрес или название пункта назначения",
+                        "maxLength": 255
+                    },
+                    "passenger_count": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Количество пассажиров",
+                        "description": "Сколько человек планируют поездку"
+                    },
+                    "luggage_description": {
+                        "type": "string",
+                        "title": "Описание багажа",
+                        "description": "Информация о количестве и типе багажа"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/BookingStatusEnum"
+                            }
+                        ],
+                        "title": "Статус",
+                        "description": "Текущий статус бронирования\n\n* `NEW` - Новая\n* `CONFIRMED` - Подтверждена\n* `IN_PROGRESS` - В работе\n* `COMPLETED` - Завершена\n* `CANCELLED` - Отменена"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "title": "Примечания",
+                        "description": "Дополнительные заметки и пожелания"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата создания",
+                        "description": "Автоматически устанавливается при создании"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата обновления",
+                        "description": "Автоматически обновляется при каждом сохранении"
+                    }
+                },
+                "required": [
+                    "arrival_location",
+                    "created_at",
+                    "customer",
+                    "desired_departure_time",
+                    "desired_trip_date",
+                    "id",
+                    "passenger_count",
+                    "source",
+                    "updated_at"
+                ]
+            },
+            "BookingPublic": {
+                "type": "object",
+                "description": "Для формы заявки на сайте (анонимные пользователи)",
+                "properties": {
+                    "customer_name": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "maxLength": 255,
+                        "minLength": 2
+                    },
+                    "customer_phone": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "maxLength": 25
+                    },
+                    "customer_email": {
+                        "type": "string",
+                        "format": "email",
+                        "writeOnly": true
+                    },
+                    "desired_trip_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Желаемая дата поездки",
+                        "description": "Дата когда клиент хочет совершить поездку"
+                    },
+                    "desired_departure_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Желаемое время отправления",
+                        "description": "Время отправления по желанию клиента"
+                    },
+                    "arrival_location": {
+                        "type": "string",
+                        "title": "Место прибытия",
+                        "description": "Адрес или название пункта назначения",
+                        "maxLength": 255
+                    },
+                    "passenger_count": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Количество пассажиров",
+                        "description": "Сколько человек планируют поездку"
+                    },
+                    "luggage_description": {
+                        "type": "string",
+                        "title": "Описание багажа",
+                        "description": "Информация о количестве и типе багажа"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "title": "Примечания",
+                        "description": "Дополнительные заметки и пожелания"
+                    }
+                },
+                "required": [
+                    "arrival_location",
+                    "customer_name",
+                    "customer_phone",
+                    "desired_departure_time",
+                    "desired_trip_date",
+                    "passenger_count"
+                ]
+            },
+            "BookingStatusEnum": {
+                "enum": [
+                    "NEW",
+                    "CONFIRMED",
+                    "IN_PROGRESS",
+                    "COMPLETED",
+                    "CANCELLED"
+                ],
+                "type": "string",
+                "description": "* `NEW` - Новая\n* `CONFIRMED` - Подтверждена\n* `IN_PROGRESS` - В работе\n* `COMPLETED` - Завершена\n* `CANCELLED` - Отменена"
+            },
+            "CategoryEnum": {
+                "enum": [
+                    "BUS",
+                    "MINIBUS"
+                ],
+                "type": "string",
+                "description": "* `BUS` - Автобус\n* `MINIBUS` - Микроавтобус"
+            },
+            "CreateUser": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email адрес для входа в систему",
+                        "maxLength": 254
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true,
+                        "title": "Пароль",
+                        "maxLength": 128
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "contact_person_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "organization_name": {
+                        "type": "string",
+                        "title": "Название организации",
+                        "description": "Название компании (если клиент - организация)",
+                        "maxLength": 255
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Телефон",
+                        "description": "Контактный номер телефона",
+                        "maxLength": 25
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Адрес электронной почты",
+                        "maxLength": 254
+                    },
+                    "customer_type": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CustomerTypeEnum"
+                            }
+                        ],
+                        "title": "Тип клиента",
+                        "description": "Физическое лицо или организация\n\n* `INDIVIDUAL` - Физическое лицо\n* `ORGANIZATION` - Организация"
+                    },
+                    "is_deleted": {
+                        "type": "boolean",
+                        "title": "Удалено",
+                        "description": "Отметка о мягком удалении записи"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата создания",
+                        "description": "Автоматически устанавливается при создании"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата обновления",
+                        "description": "Автоматически обновляется при каждом сохранении"
+                    }
+                },
+                "required": [
+                    "contact_person_name",
+                    "created_at",
+                    "customer_type",
+                    "id",
+                    "phone",
+                    "updated_at"
+                ]
+            },
+            "CustomerTypeEnum": {
+                "enum": [
+                    "INDIVIDUAL",
+                    "ORGANIZATION"
+                ],
+                "type": "string",
+                "description": "* `INDIVIDUAL` - Физическое лицо\n* `ORGANIZATION` - Организация"
+            },
+            "DriverPayment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "driver": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Уникальный идентификатор"
+                    },
+                    "driver_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "payment_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Дата выплаты",
+                        "description": "Дата фактической выплаты"
+                    },
+                    "period_start": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Начало периода",
+                        "description": "Дата начала расчетного периода"
+                    },
+                    "period_end": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Конец периода",
+                        "description": "Дата окончания расчетного периода"
+                    },
+                    "days_worked": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "Отработано дней",
+                        "description": "Автоматически вычисляется на основе периода"
+                    },
+                    "base_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "Базовая сумма",
+                        "description": "Автоматически вычисляется: дни × ставка"
+                    },
+                    "bonus_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "Сумма бонуса",
+                        "description": "Дополнительная премия (в рублях)"
+                    },
+                    "bonus_reason": {
+                        "type": "string",
+                        "title": "Причина бонуса",
+                        "description": "Описание за что выплачен бонус"
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "Итоговая сумма",
+                        "description": "Автоматически вычисляется: базовая сумма + бонус"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "title": "Примечания",
+                        "description": "Дополнительные заметки о выплате"
+                    }
+                },
+                "required": [
+                    "base_amount",
+                    "days_worked",
+                    "driver",
+                    "driver_name",
+                    "id",
+                    "payment_date",
+                    "period_end",
+                    "period_start",
+                    "total_amount"
+                ]
+            },
+            "DriverProfile": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "user": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/UserShort"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Телефон",
+                        "description": "Контактный номер телефона водителя",
+                        "maxLength": 25
+                    },
+                    "license_number": {
+                        "type": "string",
+                        "title": "Номер водительского удостоверения",
+                        "description": "Уникальный номер ВУ",
+                        "maxLength": 25
+                    },
+                    "license_category": {
+                        "type": "string",
+                        "title": "Категория ВУ",
+                        "description": "Категория водительского удостоверения (например, D, D1)",
+                        "maxLength": 25
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Дата найма",
+                        "description": "Дата приема на работу"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Status663Enum"
+                            }
+                        ],
+                        "title": "Статус",
+                        "description": "Текущий статус водителя\n\n* `ACTIVE` - Активен\n* `INACTIVE` - Неактивен\n* `ON_VACATION` - В отпуске"
+                    },
+                    "daily_rate": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "Дневная ставка",
+                        "description": "Оплата за один рабочий день (в рублях)"
+                    },
+                    "payments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DriverPayment"
+                        },
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "daily_rate",
+                    "hire_date",
+                    "id",
+                    "license_category",
+                    "license_number",
+                    "payments",
+                    "phone",
+                    "user"
+                ]
+            },
+            "DriverProfileCreate": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "writeOnly": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Телефон",
+                        "description": "Контактный номер телефона водителя",
+                        "maxLength": 25
+                    },
+                    "license_number": {
+                        "type": "string",
+                        "title": "Номер водительского удостоверения",
+                        "description": "Уникальный номер ВУ",
+                        "maxLength": 25
+                    },
+                    "license_category": {
+                        "type": "string",
+                        "title": "Категория ВУ",
+                        "description": "Категория водительского удостоверения (например, D, D1)",
+                        "maxLength": 25
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Дата найма",
+                        "description": "Дата приема на работу"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Status663Enum"
+                            }
+                        ],
+                        "title": "Статус",
+                        "description": "Текущий статус водителя\n\n* `ACTIVE` - Активен\n* `INACTIVE` - Неактивен\n* `ON_VACATION` - В отпуске"
+                    },
+                    "daily_rate": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "Дневная ставка",
+                        "description": "Оплата за один рабочий день (в рублях)"
+                    }
+                },
+                "required": [
+                    "daily_rate",
+                    "email",
+                    "hire_date",
+                    "license_category",
+                    "license_number",
+                    "phone"
+                ]
+            },
+            "MyTokenObtainPair": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "PatchedBooking": {
+                "type": "object",
+                "description": "Для администраторов через API - полная информация",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "customer": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "source": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/SourceEnum"
+                            }
+                        ],
+                        "title": "Источник заявки",
+                        "description": "Откуда поступила заявка\n\n* `PHONE` - Телефон\n* `EMAIL` - Email\n* `WEBSITE` - Сайт\n* `MESSENGER` - Мессенджер"
+                    },
+                    "desired_trip_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Желаемая дата поездки",
+                        "description": "Дата когда клиент хочет совершить поездку"
+                    },
+                    "desired_departure_time": {
+                        "type": "string",
+                        "format": "time",
+                        "title": "Желаемое время отправления",
+                        "description": "Время отправления по желанию клиента"
+                    },
+                    "arrival_location": {
+                        "type": "string",
+                        "title": "Место прибытия",
+                        "description": "Адрес или название пункта назначения",
+                        "maxLength": 255
+                    },
+                    "passenger_count": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Количество пассажиров",
+                        "description": "Сколько человек планируют поездку"
+                    },
+                    "luggage_description": {
+                        "type": "string",
+                        "title": "Описание багажа",
+                        "description": "Информация о количестве и типе багажа"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/BookingStatusEnum"
+                            }
+                        ],
+                        "title": "Статус",
+                        "description": "Текущий статус бронирования\n\n* `NEW` - Новая\n* `CONFIRMED` - Подтверждена\n* `IN_PROGRESS` - В работе\n* `COMPLETED` - Завершена\n* `CANCELLED` - Отменена"
+                    },
+                    "notes": {
+                        "type": "string",
+                        "title": "Примечания",
+                        "description": "Дополнительные заметки и пожелания"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата создания",
+                        "description": "Автоматически устанавливается при создании"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата обновления",
+                        "description": "Автоматически обновляется при каждом сохранении"
+                    }
+                }
+            },
+            "PatchedCustomer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "contact_person_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "organization_name": {
+                        "type": "string",
+                        "title": "Название организации",
+                        "description": "Название компании (если клиент - организация)",
+                        "maxLength": 255
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Телефон",
+                        "description": "Контактный номер телефона",
+                        "maxLength": 25
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Адрес электронной почты",
+                        "maxLength": 254
+                    },
+                    "customer_type": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CustomerTypeEnum"
+                            }
+                        ],
+                        "title": "Тип клиента",
+                        "description": "Физическое лицо или организация\n\n* `INDIVIDUAL` - Физическое лицо\n* `ORGANIZATION` - Организация"
+                    },
+                    "is_deleted": {
+                        "type": "boolean",
+                        "title": "Удалено",
+                        "description": "Отметка о мягком удалении записи"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата создания",
+                        "description": "Автоматически устанавливается при создании"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата обновления",
+                        "description": "Автоматически обновляется при каждом сохранении"
+                    }
+                }
+            },
+            "PatchedDriverProfileCreate": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "writeOnly": true
+                    },
+                    "phone": {
+                        "type": "string",
+                        "title": "Телефон",
+                        "description": "Контактный номер телефона водителя",
+                        "maxLength": 25
+                    },
+                    "license_number": {
+                        "type": "string",
+                        "title": "Номер водительского удостоверения",
+                        "description": "Уникальный номер ВУ",
+                        "maxLength": 25
+                    },
+                    "license_category": {
+                        "type": "string",
+                        "title": "Категория ВУ",
+                        "description": "Категория водительского удостоверения (например, D, D1)",
+                        "maxLength": 25
+                    },
+                    "hire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Дата найма",
+                        "description": "Дата приема на работу"
+                    },
+                    "status": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Status663Enum"
+                            }
+                        ],
+                        "title": "Статус",
+                        "description": "Текущий статус водителя\n\n* `ACTIVE` - Активен\n* `INACTIVE` - Неактивен\n* `ON_VACATION` - В отпуске"
+                    },
+                    "daily_rate": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$",
+                        "title": "Дневная ставка",
+                        "description": "Оплата за один рабочий день (в рублях)"
+                    }
+                }
+            },
+            "PatchedVihicleCreate": {
+                "type": "object",
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Марка",
+                        "description": "Марка транспортного средства (например, Mercedes)",
+                        "maxLength": 50
+                    },
+                    "model": {
+                        "type": "string",
+                        "title": "Модель",
+                        "description": "Модель транспортного средства (например, Sprinter)",
+                        "maxLength": 50
+                    },
+                    "year": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Год выпуска",
+                        "description": "Год производства транспортного средства"
+                    },
+                    "license_plate": {
+                        "type": "string",
+                        "title": "Гос. номер",
+                        "description": "Регистрационный номер транспортного средства",
+                        "maxLength": 20
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Вместимость",
+                        "description": "Количество пассажирских мест"
+                    },
+                    "category": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryEnum"
+                            }
+                        ],
+                        "title": "Категория",
+                        "description": "Тип транспортного средства\n\n* `BUS` - Автобус\n* `MINIBUS` - Микроавтобус"
+                    }
+                }
+            },
+            "SourceEnum": {
+                "enum": [
+                    "PHONE",
+                    "EMAIL",
+                    "WEBSITE",
+                    "MESSENGER"
+                ],
+                "type": "string",
+                "description": "* `PHONE` - Телефон\n* `EMAIL` - Email\n* `WEBSITE` - Сайт\n* `MESSENGER` - Мессенджер"
+            },
+            "Status663Enum": {
+                "enum": [
+                    "ACTIVE",
+                    "INACTIVE",
+                    "ON_VACATION"
+                ],
+                "type": "string",
+                "description": "* `ACTIVE` - Активен\n* `INACTIVE` - Неактивен\n* `ON_VACATION` - В отпуске"
+            },
+            "TokenRefresh": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "refresh": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "access",
+                    "refresh"
+                ]
+            },
+            "TokenVerify": {
+                "type": "object",
+                "properties": {
+                    "token": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "token"
+                ]
+            },
+            "UserShort": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "readOnly": true,
+                        "description": "Email адрес для входа в систему"
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "avatar": {
+                        "type": "string",
+                        "format": "uri",
+                        "readOnly": true,
+                        "nullable": true,
+                        "title": "Аватар",
+                        "description": "Фотография профиля пользователя"
+                    },
+                    "account_type": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/AccountTypeEnum"
+                            }
+                        ],
+                        "readOnly": true,
+                        "title": "Тип аккаунта",
+                        "description": "Роль пользователя в системе\n\n* `ADMIN` - Администратор\n* `DRIVER` - Водитель"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "readOnly": true,
+                        "title": "Активен",
+                        "description": "Активен ли аккаунт пользователя"
+                    }
+                },
+                "required": [
+                    "account_type",
+                    "avatar",
+                    "email",
+                    "full_name",
+                    "id",
+                    "is_active"
+                ]
+            },
+            "Vehicle": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true,
+                        "description": "Уникальный идентификатор"
+                    },
+                    "brand": {
+                        "type": "string",
+                        "title": "Марка",
+                        "description": "Марка транспортного средства (например, Mercedes)",
+                        "maxLength": 50
+                    },
+                    "model": {
+                        "type": "string",
+                        "title": "Модель",
+                        "description": "Модель транспортного средства (например, Sprinter)",
+                        "maxLength": 50
+                    },
+                    "year": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Год выпуска",
+                        "description": "Год производства транспортного средства"
+                    },
+                    "license_plate": {
+                        "type": "string",
+                        "title": "Гос. номер",
+                        "description": "Регистрационный номер транспортного средства",
+                        "maxLength": 20
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Вместимость",
+                        "description": "Количество пассажирских мест"
+                    },
+                    "category": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryEnum"
+                            }
+                        ],
+                        "title": "Категория",
+                        "description": "Тип транспортного средства\n\n* `BUS` - Автобус\n* `MINIBUS` - Микроавтобус"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "title": "Активен",
+                        "description": "Доступен ли транспорт для использования"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата создания",
+                        "description": "Автоматически устанавливается при создании"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true,
+                        "title": "Дата обновления",
+                        "description": "Автоматически обновляется при каждом сохранении"
+                    }
+                },
+                "required": [
+                    "brand",
+                    "capacity",
+                    "category",
+                    "created_at",
+                    "id",
+                    "license_plate",
+                    "model",
+                    "updated_at",
+                    "year"
+                ]
+            },
+            "VihicleCreate": {
+                "type": "object",
+                "properties": {
+                    "brand": {
+                        "type": "string",
+                        "title": "Марка",
+                        "description": "Марка транспортного средства (например, Mercedes)",
+                        "maxLength": 50
+                    },
+                    "model": {
+                        "type": "string",
+                        "title": "Модель",
+                        "description": "Модель транспортного средства (например, Sprinter)",
+                        "maxLength": 50
+                    },
+                    "year": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Год выпуска",
+                        "description": "Год производства транспортного средства"
+                    },
+                    "license_plate": {
+                        "type": "string",
+                        "title": "Гос. номер",
+                        "description": "Регистрационный номер транспортного средства",
+                        "maxLength": 20
+                    },
+                    "capacity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648,
+                        "title": "Вместимость",
+                        "description": "Количество пассажирских мест"
+                    },
+                    "category": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryEnum"
+                            }
+                        ],
+                        "title": "Категория",
+                        "description": "Тип транспортного средства\n\n* `BUS` - Автобус\n* `MINIBUS` - Микроавтобус"
+                    }
+                },
+                "required": [
+                    "brand",
+                    "capacity",
+                    "category",
+                    "license_plate",
+                    "model",
+                    "year"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
