@@ -20,7 +20,6 @@ class CreateDriverView(generics.CreateAPIView):
                 status=status.HTTP_403_FORBIDDEN
             )
         
-        # Принудительно устанавливаем тип аккаунта как DRIVER
         data = request.data.copy()
         data['account_type'] = 'DRIVER'
         

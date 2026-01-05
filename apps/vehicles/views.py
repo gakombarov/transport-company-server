@@ -1,7 +1,7 @@
 from rest_framework import viewsets, filters
 
 from apps.vehicles.models import Vehicle
-from .serializer import VehicleSerializer, VihicleCreateSerializer
+from .serializer import VehicleSerializer, VehicleCreateSerializer
 
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
@@ -13,5 +13,5 @@ class VehicleViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action in ('create', 'update', 'partial_update'):
-            return VihicleCreateSerializer
+            return VehicleCreateSerializer
         return VehicleSerializer

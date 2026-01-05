@@ -1,5 +1,4 @@
 from django.db import models
-from apps.vehicles.models import Vehicle
 from apps.common.models import IsDeletedModel
 
 
@@ -12,15 +11,6 @@ class Expense(IsDeletedModel):
         max_length=50,
         verbose_name="Категория",
         help_text="Тип расхода"
-    )
-    vehicle = models.ForeignKey(
-        Vehicle,
-        on_delete=models.CASCADE,
-        related_name='expenses',
-        null=True,
-        blank=True,
-        verbose_name="Транспортное средство",
-        help_text="Транспорт, связанный с расходом (если применимо)"
     )
     responsible_person = models.CharField(
         max_length=255,
@@ -46,4 +36,4 @@ class Expense(IsDeletedModel):
         ordering = ['-expense_date']
 
     def __str__(self):
-        return f"Расход {self.get_category_display()} - {self.expense_date} ({self.amount}₽)"
+        return f"Расход {self.category} - {self.expense_date} ({self.amount}₽)"

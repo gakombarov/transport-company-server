@@ -19,7 +19,7 @@ class VehicleSerializer(serializers.ModelSerializer):
       ]
       read_only_fields = ['id', 'created_at', 'updated_at']
 
-class VihicleCreateSerializer(serializers.ModelSerializer):
+class VehicleCreateSerializer(serializers.ModelSerializer):
     class Meta:
       model = Vehicle
       fields = [
