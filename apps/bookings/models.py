@@ -40,6 +40,12 @@ class Booking(IsDeletedModel):
         verbose_name="Желаемое время отправления",
         help_text="Время отправления по желанию клиента"
     )
+    desired_trip_location = models.CharField(
+        max_length=255,
+        verbose_name="Желаемое место отправления",
+        help_text="Адрес или название пункта отправления",
+        default=''
+    )
     arrival_location = models.CharField(
         max_length=255,
         verbose_name="Место прибытия",

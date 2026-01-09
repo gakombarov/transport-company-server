@@ -35,7 +35,7 @@ class BookingPublicSerializer(serializers.ModelSerializer):
         model = Booking
         fields = [
             'customer_name', 'customer_phone', 'customer_email',
-            'desired_trip_date', 'desired_departure_time',
+            'desired_trip_date', 'desired_departure_time', 'desired_trip_location',
             'arrival_location', 'passenger_count',
             'luggage_description', 'notes'
         ]
@@ -129,7 +129,7 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = [
-            'id', 'customer', 'source', 'desired_trip_date',
+            'id', 'customer', 'source', 'desired_trip_date', 'desired_trip_location',
             'desired_departure_time', 'arrival_location',
             'passenger_count', 'luggage_description',
             'status', 'notes', 'created_at', 'updated_at'
