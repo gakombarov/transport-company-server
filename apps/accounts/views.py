@@ -9,11 +9,10 @@ from apps.accounts.models import User
 class CreateDriverView(generics.CreateAPIView):
     """Создание водителя - ТОЛЬКО для админов"""
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated]  # Требует токен
+    permission_classes = [IsAuthenticated] 
     serializer_class = CreateUserSerializer
     
     def create(self, request, *args, **kwargs):
-        # Проверяем что текущий пользователь - админ
         if request.user.account_type != 'ADMIN':
             return Response(
                 {'error': 'Только администраторы могут создавать водителей'},
